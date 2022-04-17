@@ -363,8 +363,9 @@ INSERT INTO Fruits VALUES
 (5,'Grapes',15,6,'2018-08-17 13:30:00','2018-08-17 13:30:00'),
 (6,'Strawberry',12,7,'2018-08-17 13:30:00','2018-08-17 13:30:00');
 
--- Views  (List main)
-CREATE VIEW vFruitsInventory AS
+
+-- ## CREATE VIEW 
+CREATE VIEW vFruitsInventory AS -- CREATE OR REPLACE VIEW vfruitsInventory AS
 SELECT 
     Fruits.fruit_name,
     Fruits.Inventory,
@@ -372,17 +373,8 @@ SELECT
 FROM
 	Fruits INNER JOIN units ON
     Fruits.unit_Id = Units.Unit_Id;
-    
--- create and replace with view
-CREATE OR REPLACE VIEW vfruitsInventory AS
-SELECT 
-    Fruits.Fruit_id,
-    Fruits.Fruit_Name,
-    Fruits.Inventory,
-    Units.Unit_Name
-FROM
-	Fruits INNER JOIN Units ON
-    Fruits.Unit_Id = Units.Unit_Id;
+
+Select * From lab2Practice.vFruitsInventory;
     
 -- modify
 ALTER VIEW vFruitsInventory AS
@@ -393,10 +385,13 @@ SELECT
     Units.Unit_Name
 FROM
 	Fruits INNER JOIN Units ON
-    Fruits.Unit_Id = Units.Unit_Id
+    Fruits.Unit_Id = Units.Unit_Id;
+    
+DROP VIEW lab2Practice.vFruitsInventory ;
+Select * From lab2Practice.vFruitsInventory;
 
--- Stored Procedures (List main)
-DELIMITER //
+-- ## CREATE PROCEDURE 
+DELIMITER //   	-- 更換完結點為 //
 CREATE PROCEDURE spCheckFruitStock(thisFruit SMALLINT)
 BEGIN
 	SELECT 
@@ -407,12 +402,11 @@ BEGIN
 		Fruits INNER JOIN Units ON
 		Fruits.Unit_Id = Units.Unit_Id
 	WHERE 
-		Fruits.Fruit_Id = thisFruit;
-END //
-DELIMITER ;
+		Fruits.Fruit_Id = thisFruit;  -- 此處需要用到;
+END //.  -- 使用完結點 //
+DELIMITER ; -- 更換回 ; DELIMITER 改編定義，輸入較多的語句且句中包含分號，此時就要換成其他符號如//、$$或者;;。
 
 -- modify
-DROP PROCEDURE IF EXISTS spCheckFruitStock;
 DELIMITER //
 CREATE PROCEDURE spCheckFruitStock(thisFruit SMALLINT)
 BEGIN
@@ -428,18 +422,16 @@ BEGIN
 		Fruits.Fruit_Id = thisFruit;
 END //
 DELIMITER ;
+DROP PROCEDURE IF EXISTS spCheckFruitStock;
+
 
 -- Advance
-DROP PROCEDURE IF EXISTS spCheckFruitStockLevel;
-
 DELIMITER //
-
 CREATE PROCEDURE spCheckFruitStockLevel(
 	IN pFruit_Id SMALLINT(5),
     OUT pStockLevel VARCHAR(6))
 BEGIN
 	DECLARE stockNumber SMALLINT;
-    
 	SELECT 
 		Fruits.Inventory into stockNumber
 	FROM 
@@ -447,7 +439,6 @@ BEGIN
 		Fruits.Unit_Id = Units.Unit_Id
 	WHERE 
 		Fruits.Fruit_Id = pFruit_Id;
-        
 	IF stockNumber > 10 THEN
 		SET pStockLevel = 'High';
     ELSEIF (stockNumber <= 10 AND stockNumber >= 5) THEN
@@ -455,15 +446,12 @@ BEGIN
     ELSEIF (stockNumber < 5) THEN
 		SET pStockLevel = 'Low - Please Replace Now!';
 	END IF;
-    
 END
 DELIMITER ;
 
+DROP PROCEDURE IF EXISTS spCheckFruitStockLevel;
 
-
-
-
-#Co-related Query
+## Co-related Query
 SELECT e.eid,e.ename
 FROM employees e WHERE EXISTS
  (SELECT * FROM Certified WHERE Certified.eid = e.eid and e.ename LIKE 'A%');
