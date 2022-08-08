@@ -1,0 +1,15 @@
+{
+    "firstName": "Someone",
+    "lastName": "LAST",
+    "gender": "man",
+    "age": 37,
+    "address": {
+        "streetAddress": "115 Name",
+        "city": "new city",
+        "state": "State",
+        "postalCode": "code"
+    },
+    "mobileNumbers": [
+        { "type": "house", "number": "Number11" }
+    ]
+}
