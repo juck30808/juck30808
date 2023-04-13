@@ -1,0 +1,4 @@
+#練習設置斷點和 DEBUG
+print("--------------")
+print("Hello World")
+print("--------------")
